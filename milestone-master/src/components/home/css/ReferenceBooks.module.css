@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+}
+
+.sliderContainer {
+  overflow: hidden;
+  width: 610px;
+  height: 210px;
+  position: relative;
+}
+
+.animatedDiv {
+  display: flex;
+  width: 100%;
+  transition: transform 0.5s ease;
+}
+
+.quoteBox {
+  flex: 0 0 100%;
+}
+
+.dotContainer {
+  display: flex;
+  margin-top: 20px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+  background-color: grey;
+  margin: 10px;
+  cursor: pointer;
+}
+
+.activeDot {
+  background-color: var(--mui-palette-primary-main, #1976d2);
+}
+
+@media (max-width: 600px) {
+  .sliderContainer {
+    width: 100%;
+    height: auto;
+  }
+}

@@ -1,0 +1,47 @@
+.appBar {
+  background-color: white;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.logo {
+  height: 40px;
+}
+
+.title {
+  color: #66696d;
+}
+
+.button {
+  background-color: white;
+  color: black;
+  margin-right: 10px;
+}
+
+.button:last-child {
+  margin-right: 0;
+}
+
+.mainContent {
+  min-height: 100vh;
+  background-color: rgb(21, 100, 104);
+  color: #66696d;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow-y: hidden;
+}
+
+@media (max-width: 600px) {
+  .button {
+    margin-right: 5px;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+}
