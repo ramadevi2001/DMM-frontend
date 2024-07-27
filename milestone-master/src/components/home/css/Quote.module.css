@@ -1,0 +1,52 @@
+.quoteCard {
+    display: flex;
+    width: 600px;
+    border: 2px solid white;
+  }
+  
+  .quoteCardMedia {
+    height: 200px;
+    width: 100%;
+    object-fit: scale-down;
+    border: 1px solid white;
+    border-radius: 3px;
+  }
+  
+  .quoteCardContent {
+    flex: 8;
+    background-color: rgb(21, 100, 104);
+    color: white;
+  }
+  
+  .quoteText {
+    text-align: center;
+    font-style: italic;
+    color: goldenrod;
+  }
+  
+  .quoteAuthor {
+    float: right;
+    font-style: italic;
+    margin-right: 2%;
+  }
+  
+  @media (max-width: 600px) {
+    .quoteCard {
+      flex-direction: column;
+      width: 100%;
+    }
+  
+    .quoteCardMedia {
+      height: auto;
+    }
+  
+    .quoteCardContent {
+      text-align: center;
+    }
+  
+    .quoteAuthor {
+      float: none;
+      margin-right: 0;
+    }
+  }
+  
