@@ -1,5 +1,5 @@
 .appBar {
-  background-color: white;
+  background-color: rgb(241, 238, 238);
 }
 
 .toolbar {
@@ -16,9 +16,12 @@
 }
 
 .button {
-  background-color: white;
-  color: black;
+  background-color: rgb(16 76 79);
+  color: white;
   margin-right: 10px;
+  padding: 5px;
+  border: 1px solid  white !important;
+  border-radius: 4px;
 }
 
 .button:last-child {
@@ -27,7 +30,7 @@
 
 .mainContent {
   min-height: 100vh;
-  background-color: rgb(21, 100, 104);
+  background-color: rgb(16 76 79);
   color: #66696d;
   padding: 20px;
   display: flex;
