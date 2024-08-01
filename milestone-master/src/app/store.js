@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import counterReducer from '../features/counter/counterSlice';
-import authReducer from '../features/auth/authSlice';
+import rootReducer from './index';
+import logger from 'redux-logger';
 
-export const store = configureStore({
-  reducer: {
-    counter: counterReducer,
-    auth: authReducer,
-  },
+const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
+  devTools: process.env.NODE_ENV !== 'production',
 });
+export default store;
