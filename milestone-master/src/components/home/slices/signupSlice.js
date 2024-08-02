@@ -14,13 +14,9 @@ const handleFetch = async (url, options = {}) => {
         return response.data;
     } catch (error) {
         // Extract the error message from the response if available
-        console.log("error",error.response?.data)
-        const errors = error.response.data
-        const keys = Object.values(errors)
-        console.log("keys", keys)
-        let finalErrors = keys.flat()
-       console.log("finalErrors", finalErrors)
-
+        const errors = error.response.data;
+        const keys = Object.values(errors);
+        let finalErrors = keys.flat();
         const errorMessage = finalErrors.join("\n");
         throw new Error(errorMessage);
     }
@@ -37,56 +33,30 @@ export const signup = createAsyncThunk('auth/signup', async (userData) => {
     return response;
 });
 
-export const login = createAsyncThunk('auth/login', async (credentials) => {
-    const response = await handleFetch('/api/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(credentials),
-    });
-    return response;
-});
-
-export const logout = createAsyncThunk('auth/logout', async () => {
-    await handleFetch('/api/logout', {
-        method: 'POST',
-    });
-});
-
-const authSlice = createSlice({
-    name: 'auth',
+const signupSlice = createSlice({
+    name: 'signup',
     initialState: { user: null, status: 'idle', error: null },
     reducers: {
         resetStatus: (state) => {
             state.status = 'idle';
             state.error = null;
-          }
+        }
     },
     extraReducers: (builder) => {
         builder
             .addCase(signup.fulfilled, (state, action) => {
                 state.user = action.payload;
-                state.status = "success";
-            })
-            .addCase(login.fulfilled, (state, action) => {
-                state.user = action.payload;
-            })
-            .addCase(logout.fulfilled, (state) => {
-                state.user = null;
+                state.status = 'success';
             })
             .addCase(signup.rejected, (state, action) => {
                 state.error = action.error;
-                state.status = "failed";
+                state.status = 'failed';
             })
-            .addCase(login.rejected, (state, action) => {
-                state.error = action.error.message;
-            })
-            .addCase(signup.pending, (state, action) => {
-                state.status = "pending";
+            .addCase(signup.pending, (state) => {
+                state.status = 'pending';
             });
     },
 });
 
-export const { resetStatus } = authSlice.actions;
-export default authSlice.reducer;
+export const { resetStatus } = signupSlice.actions;
+export default signupSlice.reducer;

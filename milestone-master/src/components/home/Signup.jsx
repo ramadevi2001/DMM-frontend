@@ -13,7 +13,7 @@ import {
 import { Visibility, VisibilityOff, Lock } from "@mui/icons-material";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { signup, resetStatus } from "./slices/authSlice";
+import { signup, resetStatus } from "./slices/signupSlice";
 import ErrorComponent from "../popup/Error";
 import LoadingComponent from "../popup/Loading";
 import SuccessComponent from "../popup/Success";
@@ -37,8 +37,8 @@ const validationSchema = Yup.object({
 
 const Signup = () => {
   const dispatch = useDispatch();
-  const userSignup = useSelector((state) => state.auth);
-  const { user, status, error } = userSignup;
+  const userSignup = useSelector((state) => state.signup);
+  const { status, error } = userSignup;
   const navigate = useNavigate();
   const initialValues = {
     firstName: "",
@@ -80,7 +80,6 @@ const Signup = () => {
 
 
   const onCloseError = ()=>{
-  
      dispatch(resetStatus())
   }
 
