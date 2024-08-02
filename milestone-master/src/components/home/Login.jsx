@@ -8,10 +8,17 @@ import {
   IconButton,
   InputAdornment,
   Box,
-  Link
+  Link,
 } from "@mui/material";
 import { Visibility, VisibilityOff, Lock } from "@mui/icons-material";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { login, resetStatus } from "./slices/loginSlice";
+
+import ErrorComponent from "../popup/Error";
+import LoadingComponent from "../popup/Loading";
+import SuccessComponent from "../popup/Success";
+
 
 const validationSchema = Yup.object({
   email: Yup.string()
@@ -22,30 +29,47 @@ const validationSchema = Yup.object({
     .matches(
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
       "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one special symbol and one number"
-    )
+    ),
 });
 
 const Login = () => {
+
+  const userLogin = useSelector((state) => state.login);
+  const { user, status, error } = userLogin;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const initialValues = {
     email: "",
-    password: ""
+    password: "",
   };
 
+
+
   const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const toggleShowConfirmPassword = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
-
   const onSubmit = (values) => {
-    console.log("formdata", values);
+    dispatch(login(values));
   };
 
+  const onCloseError = ()=>{
+    dispatch(resetStatus())
+ 
+
+ }
+
+
+ const onCloseSuccess = ()=>{
+  dispatch(resetStatus())
+  console.log("user after login", user)
+  localStorage.setItem('token', user.access)
+  localStorage.setItem("user", JSON.stringify(user.user))
+  navigate("/choices")
+}
   const formStyles = {
     backgroundColor: "#ffffff",
     color: "black",
@@ -55,6 +79,7 @@ const Login = () => {
   };
 
   return (
+    <>
     <Box p={6} style={formStyles}>
       <Formik
         initialValues={initialValues}
@@ -64,8 +89,6 @@ const Login = () => {
         {({ errors, touched }) => (
           <Form>
             <Grid container spacing={1}>
-            
-            
               <Grid item xs={12}>
                 <Field
                   as={TextField}
@@ -116,7 +139,7 @@ const Login = () => {
                   }}
                 />
               </Grid>
-              
+
               <Grid item xs={12}>
                 <Button
                   type="submit"
@@ -143,6 +166,16 @@ const Login = () => {
         )}
       </Formik>
     </Box>
+    {status === "success" && <SuccessComponent open={status === "success"} onClose={onCloseSuccess} message={"Successfully LoggedIn"}/>}
+      {status === "pending" && <LoadingComponent open={status === "pending"}/>}
+      {status === "failed" && (
+        <ErrorComponent
+          open={status === "failed"}
+          onClose={onCloseError}
+          message={error.message}
+        />
+      )}
+    </>
   );
 };
 
