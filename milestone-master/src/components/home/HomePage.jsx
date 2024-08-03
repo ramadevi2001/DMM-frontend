@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Box, Typography, Button, IconButton, Menu, MenuItem } from "@mui/material";
-import { useNavigate, useLocation } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { AppBar, Toolbar, Box, Typography, IconButton, Menu, MenuItem } from "@mui/material";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import PersonIcon from '@mui/icons-material/Person';
-import styles from "./css/Homepage.module.css";
+import styles from "./css/Homepage.module.css"; // Assuming you have appropriate CSS in this file
 
 const Homepage = () => {
   const token = localStorage.getItem("token");
-  const user = JSON.parse(localStorage.getItem("user")); // Assuming user data is stoyellow as JSON string
+  const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
-  const location = useLocation(); // Get the current path
+  const location = useLocation();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -25,39 +24,63 @@ const Homepage = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     handleMenuClose();
-    navigate("/"); // yellowirect to homepage after logout
+    navigate("/"); // Redirect to homepage after logout
   };
 
   return (
-    <AppBar position="static" className={styles.appBar} sx={{ backgroundColor: "white" }}>
-      <Toolbar className={styles.toolbar}>
-        <Box display="flex" alignItems="center">
-          <img src="/path-to-logo.png" alt="Logo" className={styles.logo} />
+    <AppBar position="static" sx={{ backgroundColor: "rgb(21, 100, 104)" }}>
+      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        {/* First Box: Logo */}
+        <Box sx={{ flexBasis: '25%' }}>
+          <img src="/path-to-logo.png" alt="Logo" className={styles.logo} style={{ maxHeight: 50 }} />
         </Box>
-        <Box flexGrow={1}>
+
+        {/* Second Box: Title */}
+        <Box sx={{ flexBasis: '30%', textAlign: 'center' }}>
           <Typography
             variant="h4"
             className={styles.title}
-            gutterBottom
             component={Link}
             to="/"
+            sx={{
+              textDecoration: 'none',
+              color: 'inherit',
+            }}
           >
             Milestone Master
           </Typography>
         </Box>
 
-        <Box display="flex" alignItems="center">
+        {/* Third Box: Navigation Links and User Menu */}
+        <Box sx={{ flexBasis: '45%', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
           {token ? (
             <>
               <Link
                 className={styles.button}
                 to="/choices"
                 style={{
-                  color: location.pathname === "/choices" ? "yellow" : "inherit",
+                  backgroundColor: location.pathname === "/choices" ? "white" : "inherit",
+                  color: location.pathname === "/choices" ? "black" : "inherit",
+                  padding: '10px 15px',
+                  borderRadius: '5px',
                   textDecoration: "none",
                 }}
               >
                 Choices
+              </Link>
+              <Link
+                className={styles.button}
+                to="/goals"
+                style={{
+                  backgroundColor: location.pathname === "/goals" ? "white" : "inherit",
+                  color: location.pathname === "/goals" ? "black" : "inherit",
+                  padding: '10px 15px',
+                  borderRadius: '5px',
+                  textDecoration: "none",
+                  marginLeft: '10px'
+                }}
+              >
+                Goals
               </Link>
               <IconButton
                 onClick={handleMenuOpen}
@@ -68,7 +91,7 @@ const Homepage = () => {
                 <Typography
                   variant="body1"
                   ml={1}
-                  style={{ color: "inherit" }} // Keep text color consistent
+                  style={{ color: "inherit" }}
                 >
                   {user ? `${user.first_name} ${user.last_name}` : "User"}
                 </Typography>
@@ -87,8 +110,12 @@ const Homepage = () => {
                 className={styles.button}
                 to="/signup"
                 style={{
-                  color: location.pathname === "/signup" ? "yellow" : "inherit",
+                  backgroundColor: location.pathname === "/signup" ? "white" : "inherit",
+                  color: location.pathname === "/signup" ? "black" : "inherit",
+                  padding: '10px 15px',
+                  borderRadius: '5px',
                   textDecoration: "none",
+                  marginRight: '10px'
                 }}
               >
                 Signup
@@ -97,7 +124,10 @@ const Homepage = () => {
                 className={styles.button}
                 to="/login"
                 style={{
-                  color: location.pathname === "/login" ? "yellow" : "inherit",
+                  backgroundColor: location.pathname === "/login" ? "white" : "inherit",
+                  color: location.pathname === "/login" ? "black" : "inherit",
+                  padding: '10px 15px',
+                  borderRadius: '5px',
                   textDecoration: "none",
                 }}
               >
