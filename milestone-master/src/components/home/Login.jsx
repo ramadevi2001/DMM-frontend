@@ -58,8 +58,6 @@ const Login = () => {
 
   const onCloseError = ()=>{
     dispatch(resetStatus())
- 
-
  }
 
 
@@ -68,6 +66,7 @@ const Login = () => {
   console.log("user after login", user)
   localStorage.setItem('token', user.access)
   localStorage.setItem("user", JSON.stringify(user.user))
+  alert("navigate to choices")
   navigate("/choices")
 }
   const formStyles = {

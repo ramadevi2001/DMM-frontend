@@ -20,7 +20,7 @@ const App = () => {
           <Route path="/" element={<ReferenceBooks />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          {token ? (
+          {token && token!==null ? (
             <>
             <Route path="/choices" element={<Choices />} />
             <Route path="/goals" element={<Goals />} />
