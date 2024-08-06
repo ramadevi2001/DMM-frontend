@@ -6,6 +6,10 @@ import { Box, Grid, Button, TextField, Typography, Select, MenuItem, FormControl
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import GenericTable from "../common/GenericTable";
+import AddGoal from "./AddGoal";
+import { addGoal } from "./slices/addGoal.slice";
+import { selectedChoice as selectedChoiceDispatch } from "../choices/slices/choices.slice";
+
 
 const GoalsList = () => {
   const dispatch = useDispatch();
@@ -20,6 +24,8 @@ const GoalsList = () => {
   const [rowsPerPage, setRowsPerPage] = useState(4);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedChoice, setSelectedChoice] = useState(selectedFromChoice);
+
+  const [openAddModal, setOpenAddModal] = useState(false)
 
   useEffect(() => {
 
@@ -52,6 +58,7 @@ const GoalsList = () => {
   const handleChoiceChange = (event) => {
     setSelectedChoice(event.target.value);
     // Call a function with the ID of the selected choice
+    dispatch(selectedChoiceDispatch(event.target.value))
     alert(event.target.value);
     dispatch(getGoalsByChoice(event.target.value));
   };
@@ -79,7 +86,11 @@ const GoalsList = () => {
     // navigate("/goals");
   };
 
+  const handleAddGoal = (inputData) => {
+    dispatch(addGoal(inputData));
+  };
   return (
+    <>
     <Box sx={{ width: "75%", marginTop: "1%", border: "5px solid #92918e" }}>
       <Box p={1} sx={{ backgroundColor: "white" }}>
         <Grid container spacing={1} alignItems="center">
@@ -104,7 +115,7 @@ const GoalsList = () => {
               variant="contained"
               color="primary"
               startIcon={<AddIcon />}
-              // onClick={() => setOpenAddModal(true)}
+              onClick={() => setOpenAddModal(true)}
               sx={{ backgroundColor: "rgb(21, 100, 104)" }}
             >
               Add Goal
@@ -149,6 +160,13 @@ const GoalsList = () => {
         <h2>No Goals Yet</h2>
       )}
     </Box>
+
+    <AddGoal
+        open={openAddModal}
+        handleClose={() => setOpenAddModal(false)}
+        handleAddGoal={handleAddGoal}
+      />
+    </>
   );
 };
 
