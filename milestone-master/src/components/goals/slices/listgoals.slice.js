@@ -11,6 +11,15 @@ export const getGoals = createAsyncThunk('goals/get', async () => {
     return response;
 });
 
+export const getGoalsByChoice = createAsyncThunk('goals/get/choice', async (choiceId) => {
+    const response = await handleFetch(`/api/goals-choice/${choiceId}/`, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        }
+    });
+    return response;
+});
 
 const goalsSlice = createSlice({
     name: 'goals',
@@ -36,7 +45,20 @@ const goalsSlice = createSlice({
             })
             .addCase(getGoals.pending, (state) => {
                 state.status = 'pending';
-            });
+            })
+            .addCase(getGoalsByChoice.fulfilled, (state, action) => {
+                state.goals = action.payload;
+                state.status = 'success';
+            })
+            .addCase(getGoalsByChoice.rejected, (state, action) => {
+                state.error = action.error;
+                state.status = 'failed';
+            })
+            .addCase(getGoalsByChoice.pending, (state) => {
+                state.status = 'pending';
+            })
+
+
     },
 });
 

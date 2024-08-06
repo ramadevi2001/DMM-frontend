@@ -1,7 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { handleCreate } from '../../../app/http.request';
-export const addChoice = createAsyncThunk('add/choice', async (inputData) => {
-    const response = await handleCreate('/api/choices/', {
+import {handleCreate} from "../../../app/http.request"
+
+
+
+export const addGoal = createAsyncThunk('add/goal', async (inputData) => {
+    const response = await handleCreate('/api/goals/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -14,9 +17,9 @@ export const addChoice = createAsyncThunk('add/choice', async (inputData) => {
 
 
 
-const addChoiceSlice = createSlice({
-    name: 'addChoice',
-    initialState: { choice: {}, status: 'idle', error: null},
+const addGoalSlice = createSlice({
+    name: 'addGoal',
+    initialState: { goal: {}, status: 'idle', error: null},
     reducers: {
         resetStatus: (state) => {
             state.status = 'idle';
@@ -25,19 +28,19 @@ const addChoiceSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(addChoice.fulfilled, (state, action) => {
+            .addCase(addGoal.fulfilled, (state, action) => {
                 state.choice = action.payload;
                 state.status = 'success';
             })
-            .addCase(addChoice.rejected, (state, action) => {
+            .addCase(addGoal.rejected, (state, action) => {
                 state.error = action.error;
                 state.status = 'failed';
             })
-            .addCase(addChoice.pending, (state) => {
+            .addCase(addGoal.pending, (state) => {
                 state.status = 'pending';
             });
     },
 });
 
-export const { resetStatus } = addChoiceSlice.actions;
-export default addChoiceSlice.reducer;
+export const { resetStatus } = addGoalSlice.actions;
+export default addGoalSlice.reducer;

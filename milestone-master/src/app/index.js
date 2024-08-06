@@ -8,6 +8,7 @@ import addChoiceReducer from '../components/choices/slices/addChoice.slice';
 import deleteChoiceReducer from '../components/choices/slices/deleteChoice.slice';
 import updateChoiceReducer  from '../components/choices/slices/updateChoice.slice';
 import listGoalsReducder from '../components/goals/slices/listgoals.slice';
+import addGoalsReducder from '../components/goals/slices/addGoal.slice';
 const rootReducer = combineReducers({
     signup: signupReducer,
     login: loginReducer,
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
     addChoice: addChoiceReducer,
     deleteChoice: deleteChoiceReducer,
     updateChoice: updateChoiceReducer,
-    listGoals: listGoalsReducder,  // Add listGoal reducer here.  (If necessary)
+    listGoals: listGoalsReducder,
+    addGoal: addGoalsReducder  // Add listGoal reducer here.  (If necessary)
   });
  
 
