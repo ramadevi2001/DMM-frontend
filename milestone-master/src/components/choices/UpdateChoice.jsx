@@ -10,6 +10,7 @@ import { resetStatus as updateResetStatus } from './slices/updateChoice.slice';
 import { useNavigate } from 'react-router-dom';
 import { getChoices } from './slices/choices.slice';
 
+
 const UpdateChoice = ({ open, handleClose, handleUpdateChoice, existingChoice }) => {
   const choiceState = useSelector((state) => state.updateChoice);
   const { status, error } = choiceState;
