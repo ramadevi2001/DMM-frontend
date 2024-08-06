@@ -19,6 +19,7 @@ const choicesSlice = createSlice({
             state.error = null;
         },
         selectedChoice: (state, action) => {
+           
             state.selectedChoice = action.payload;
         },
     },
