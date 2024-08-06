@@ -61,22 +61,25 @@ const GenericTable = ({
             {data.map((row, index) => (
               <TableRow key={row[rowKey]}>
                 {Object.keys(row).map(
-                  (key) =>
+                  (key, colIndx) =>
                     key !== rowKey && (
+                    
                       <TableCell
-                        key={key}
-                        sx={{
-                          fontWeight: "bold",
-                          color: "blue",
-                          textDecoration: "underline",
-                          cursor: "pointer",
-                          padding: "2px",
-                          fontSize: "10px",
-                        }}
-                        onClick={() => onCellClick(row[rowKey])}
-                      >
+                      key={key}
+                      sx={{
+                        fontWeight: "bold",
+                        color: colIndx === 1 ? "blue" : "inherit",
+                        textDecoration: colIndx === 1 ? "underline" : "none",
+                        cursor: colIndx === 1 ? "pointer" : "default",
+                        padding: "2px",
+                        fontSize: "10px",
+                      }}
+                      onClick={() => colIndx === 1 && onCellClick(row[rowKey])}
+                    >
                         {row[key]}
                       </TableCell>
+
+                      
                     )
                 )}
                 <TableCell sx={{ padding: "2px", fontSize: "10px" }}>
