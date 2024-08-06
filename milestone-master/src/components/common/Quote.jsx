@@ -7,7 +7,7 @@ const Quote = ({heading, message}) => {
       sx={{
         maxWidth: "100%",
         marginTop: '1%',
-        borderRadius: 10,
+        borderRadius: 5,
         padding: '0',
         boxShadow: '0 6px 10px rgba(0,0,0,0.2)',
         background: 'linear-gradient(135deg, #f5f7fa, #c3cfe2)',
@@ -17,9 +17,9 @@ const Quote = ({heading, message}) => {
         <Typography
           sx={{
             fontWeight: 'bold',
-            fontSize: '1.3rem',
+            fontSize: '1.1rem',
             color: '#3f51b5',
-            marginBottom: '1px',
+            marginBottom: '0.5px',
           }}
         >
           {heading}
@@ -28,7 +28,7 @@ const Quote = ({heading, message}) => {
           sx={{
             fontWeight: 'bold',
             fontStyle: 'italic',
-            fontSize: '1.1rem',
+            fontSize: '1.0rem',
             color: '#2e2e2e',
           }}
         >
