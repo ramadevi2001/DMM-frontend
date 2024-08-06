@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AppBar, Toolbar, Box, Typography, IconButton, Menu, MenuItem } from "@mui/material";
+import { AppBar, Toolbar, Box, Typography, Button, Menu, MenuItem } from "@mui/material";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import PersonIcon from '@mui/icons-material/Person';
 import styles from "./css/Homepage.module.css"; // Assuming you have appropriate CSS in this file
@@ -82,20 +82,19 @@ const Homepage = () => {
               >
                 Goals
               </Link>
-              <IconButton
+              <Button
                 onClick={handleMenuOpen}
-                className={styles.button}
-                sx={{ ml: 2 }}
+                sx={{ml:2}}
               >
                 <PersonIcon />
                 <Typography
                   variant="body1"
                   ml={1}
-                  style={{ color: "inherit" }}
+                  style={{ color: "white" }}
                 >
                   {user ? `${user.first_name} ${user.last_name}` : "User"}
                 </Typography>
-              </IconButton>
+              </Button>
               <Menu
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}

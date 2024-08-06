@@ -1,46 +1,36 @@
 // ChoicesList.jsx
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getChoices, selectedChoice } from "./slices/choices.slice"; // Include deleteChoice action
+import { getChoices, selectedChoice } from "./slices/choices.slice";
 import { addChoice } from "./slices/addChoice.slice";
 import { deleteChoice } from "./slices/deleteChoice.slice";
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  TablePagination,
-  TextField,
   Box,
-  IconButton,
   Grid,
   Button,
+  TextField,
   Typography,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
-import AddChoice from "./AddChoice"; // Import the AddChoice component
-import DeleteConfirmation from "./DeleteConfirmation"; // Import the DeleteConfirmation component
+import AddChoice from "./AddChoice";
+import DeleteConfirmation from "./DeleteConfirmation";
 import UpdateChoice from "./UpdateChoice";
 import { updateChoice } from "./slices/updateChoice.slice";
+import GenericTable from "../common/GenericTable";
 
 const ChoicesList = () => {
   const dispatch = useDispatch();
-  const choices = useSelector((state) => state.choices.choices); // Adjust according to your Redux state structure
+  const choices = useSelector((state) => state.choices.choices);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(4); // Default rows per page
+  const [rowsPerPage, setRowsPerPage] = useState(4);
   const [searchTerm, setSearchTerm] = useState("");
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [deleteId, setDeleteId] = useState(null); // Store ID of item to delete
-  const navigate = useNavigate();
+  const [deleteId, setDeleteId] = useState(null);
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [updateChoiceData, setUpdateChoiceData] = useState({});
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getChoices());
@@ -67,8 +57,8 @@ const ChoicesList = () => {
   const handleUpdateChoice = (inputData) => {
     const data = {
       id: updateChoiceData.id,
-      become: inputData.become
-    }
+      become: inputData.become,
+    };
     dispatch(updateChoice(data));
     dispatch(getChoices());
     setOpenUpdateModal(false);
@@ -91,13 +81,11 @@ const ChoicesList = () => {
 
   const choicesToDisplay = filteredChoices
     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-    .map(({ id, user, ...rest }) => ({ id, ...rest })); // Include `id` for actions
+    .map(({ id, user, ...rest }) => ({ id, ...rest }));
 
   const handleEdit = (choice) => {
     setOpenUpdateModal(true);
     setUpdateChoiceData(choice);
-    console.log("updateChoiceData", updateChoiceData)
-    
   };
 
   const handleDelete = (id) => {
@@ -112,25 +100,20 @@ const ChoicesList = () => {
 
   return (
     <>
-      <Paper
-        sx={{ width: "75%", marginTop: "1%", border: "5px solid #92918e" }}
-      >
-        <Box p={1}>
+      <Box sx={{ width: "75%", marginTop: "1%", border: "5px solid #92918e" }}>
+        <Box p={1} sx={{backgroundColor: "white"}}>
           <Grid container spacing={1} alignItems="center">
-            {/* First Column: Add Choices Button */}
             <Grid item xs={3}>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => setOpenAddModal(true)} // Open the modal
+                onClick={() => setOpenAddModal(true)}
                 sx={{ backgroundColor: "rgb(21, 100, 104)" }}
               >
                 Add Choice
               </Button>
             </Grid>
-
-            {/* Third Column: Your Choices Heading */}
             <Grid item xs={6}>
               <Typography
                 variant="h6"
@@ -140,8 +123,6 @@ const ChoicesList = () => {
                 Your Choices
               </Typography>
             </Grid>
-
-            {/* Fourth Column: Search */}
             <Grid item xs={3}>
               <TextField
                 variant="outlined"
@@ -154,90 +135,21 @@ const ChoicesList = () => {
           </Grid>
         </Box>
 
-        <TableContainer>
-          <Table>
-            <TableHead sx={{ backgroundColor: "rgb(16 76 79)" }}>
-              <TableRow>
-                {choicesToDisplay.length > 0 &&
-                  Object.keys(choicesToDisplay[0]).map(
-                    (key) =>
-                      key !== "id" && (
-                        <TableCell
-                          sx={{
-                            color: "white",
-                            fontWeight: "bold",
-                            padding: "3px",
-                            fontSize: "12px",
-                          }}
-                          key={key}
-                        >
-                          {key.toString().toUpperCase()}
-                        </TableCell>
-                      )
-                  )}
-                <TableCell
-                  sx={{
-                    color: "white",
-                    fontWeight: "bold",
-                    padding: "3px",
-                    fontSize: "12px",
-                  }}
-                >
-                  ACTIONS
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {choicesToDisplay.map((choice, index) => (
-                <TableRow key={index}>
-                  {Object.keys(choice).map(
-                    (key, idx) =>
-                      key !== "id" && (
-                        <TableCell
-                          key={idx}
-                          sx={{
-                            fontWeight: "bold",
-                            color: "blue",
-                            textDecoration: "underline",
-                            cursor: "pointer",
-                            padding: "2px",
-                            fontSize: "10px",
-                          }}
-                          onClick={() => handleCellClick(choice.id)}
-                        >
-                          {choice[key]}
-                        </TableCell>
-                      )
-                  )}
-                  <TableCell sx={{ padding: "2px", fontSize: "10px" }}>
-                    <IconButton
-                      onClick={() => handleEdit(choice)}
-                      color="primary"
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => handleDelete(choice.id)}
-                      color="secondary"
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          component="div"
-          count={filteredChoices.length}
-          rowsPerPage={rowsPerPage}
+        <GenericTable
+          data={choicesToDisplay}
+          headers={Object.keys(choicesToDisplay[0] || {}).filter(
+            (key) => key !== "id"
+          )}
+          onCellClick={handleCellClick}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
           page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          rowsPerPageOptions={[4, 8, 12, 20]}
+          rowsPerPage={rowsPerPage}
+          handleChangePage={handleChangePage}
+          handleChangeRowsPerPage={handleChangeRowsPerPage}
         />
-      </Paper>
+      </Box>
+
       <AddChoice
         open={openAddModal}
         handleClose={() => setOpenAddModal(false)}
