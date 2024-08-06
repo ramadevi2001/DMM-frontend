@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // Utility function to handle fetch requests
-const handleCreateChoice = async (url, options = {}) => {
+const handleUpdateChoice = async (url, options = {}) => {
     const completeUrl = `http://127.0.0.1:8000${url}`;
     try {
         const response = await axios({
@@ -11,7 +11,7 @@ const handleCreateChoice = async (url, options = {}) => {
             headers: options.headers || {},
             data: options.body || {},
         });
-        console.log("add choice response: " + response.data)
+        console.log("updateChoice response: " + response.data)
         return response.data;
     } catch (error) {
         // Check if the error response exists
@@ -51,22 +51,22 @@ const handleCreateChoice = async (url, options = {}) => {
       
 };
 
-export const addChoice = createAsyncThunk('add/choice', async (inputData) => {
-    const response = await handleCreateChoice('/api/choices/', {
-        method: 'POST',
+export const updateChoice = createAsyncThunk('update/choice', async (inputData) => {
+    const response = await handleUpdateChoice(`/api/choices/${inputData.id}/`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer '+ localStorage.getItem("token")
         },
-        body: JSON.stringify(inputData),
+        body: JSON.stringify({become: inputData.become}),
     });
     return response;
 });
 
 
 
-const addChoiceSlice = createSlice({
-    name: 'addChoice',
+const updateChoiceSlice = createSlice({
+    name: 'updateChoice',
     initialState: { choice: {}, status: 'idle', error: null},
     reducers: {
         resetStatus: (state) => {
@@ -76,19 +76,19 @@ const addChoiceSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(addChoice.fulfilled, (state, action) => {
+            .addCase(updateChoice.fulfilled, (state, action) => {
                 state.choice = action.payload;
                 state.status = 'success';
             })
-            .addCase(addChoice.rejected, (state, action) => {
+            .addCase(updateChoice.rejected, (state, action) => {
                 state.error = action.error;
                 state.status = 'failed';
             })
-            .addCase(addChoice.pending, (state) => {
+            .addCase(updateChoice.pending, (state) => {
                 state.status = 'pending';
             });
     },
 });
 
-export const { resetStatus, selectedChoice } = addChoiceSlice.actions;
-export default addChoiceSlice.reducer;
+export const { resetStatus, selectedChoice } = updateChoiceSlice.actions;
+export default updateChoiceSlice.reducer;

@@ -1,10 +1,7 @@
 // ChoicesList.jsx
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getChoices,
-  selectedChoice,
-} from "./slices/choices.slice"; // Include deleteChoice action
+import { getChoices, selectedChoice } from "./slices/choices.slice"; // Include deleteChoice action
 import { addChoice } from "./slices/addChoice.slice";
 import { deleteChoice } from "./slices/deleteChoice.slice";
 import {
@@ -29,6 +26,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
 import AddChoice from "./AddChoice"; // Import the AddChoice component
 import DeleteConfirmation from "./DeleteConfirmation"; // Import the DeleteConfirmation component
+import UpdateChoice from "./UpdateChoice";
+import { updateChoice } from "./slices/updateChoice.slice";
 
 const ChoicesList = () => {
   const dispatch = useDispatch();
@@ -40,6 +39,8 @@ const ChoicesList = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null); // Store ID of item to delete
   const navigate = useNavigate();
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [updateChoiceData, setUpdateChoiceData] = useState({});
 
   useEffect(() => {
     dispatch(getChoices());
@@ -63,6 +64,17 @@ const ChoicesList = () => {
     dispatch(getChoices());
   };
 
+  const handleUpdateChoice = (inputData) => {
+    const data = {
+      id: updateChoiceData.id,
+      become: inputData.become
+    }
+    dispatch(updateChoice(data));
+    dispatch(getChoices());
+    setOpenUpdateModal(false);
+    navigate("/choices");
+  };
+
   const handleConfirmDelete = () => {
     if (deleteId !== null) {
       dispatch(deleteChoice(deleteId));
@@ -81,9 +93,11 @@ const ChoicesList = () => {
     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
     .map(({ id, user, ...rest }) => ({ id, ...rest })); // Include `id` for actions
 
-  const handleEdit = (id) => {
-    console.log(`Edit item with id: ${id}`);
-    // Implement your edit logic here
+  const handleEdit = (choice) => {
+    setOpenUpdateModal(true);
+    setUpdateChoiceData(choice);
+    console.log("updateChoiceData", updateChoiceData)
+    
   };
 
   const handleDelete = (id) => {
@@ -197,7 +211,7 @@ const ChoicesList = () => {
                   )}
                   <TableCell sx={{ padding: "2px", fontSize: "10px" }}>
                     <IconButton
-                      onClick={() => handleEdit(choice.id)}
+                      onClick={() => handleEdit(choice)}
                       color="primary"
                     >
                       <EditIcon />
@@ -228,6 +242,12 @@ const ChoicesList = () => {
         open={openAddModal}
         handleClose={() => setOpenAddModal(false)}
         handleAddChoice={handleAddChoice}
+      />
+      <UpdateChoice
+        open={openUpdateModal}
+        handleClose={() => setOpenUpdateModal(false)}
+        handleUpdateChoice={handleUpdateChoice}
+        existingChoice={updateChoiceData}
       />
       <DeleteConfirmation
         open={openDeleteModal}
