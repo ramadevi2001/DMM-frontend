@@ -1,22 +1,24 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { handleUpdate } from '../../../app/http.request';
 
-export const updateChoice = createAsyncThunk('update/choice', async (inputData) => {
-    const response = await handleUpdate(`/api/choices/${inputData.id}/`, {
+
+
+export const updateGoal = createAsyncThunk('update/goals', async (inputData) => {
+    const response = await handleUpdate(`/api/goals/${inputData.id}/`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer '+ localStorage.getItem("token")
         },
-        body: JSON.stringify({become: inputData.become}),
+        body: JSON.stringify(inputData),
     });
     return response;
 });
 
 
 
-const updateChoiceSlice = createSlice({
-    name: 'updateChoice',
+const updateGoalSlice = createSlice({
+    name: 'updateGoal',
     initialState: { choice: {}, status: 'idle', error: null},
     reducers: {
         resetStatus: (state) => {
@@ -26,19 +28,19 @@ const updateChoiceSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(updateChoice.fulfilled, (state, action) => {
+            .addCase(updateGoal.fulfilled, (state, action) => {
                 state.choice = action.payload;
                 state.status = 'success';
             })
-            .addCase(updateChoice.rejected, (state, action) => {
+            .addCase(updateGoal.rejected, (state, action) => {
                 state.error = action.error;
                 state.status = 'failed';
             })
-            .addCase(updateChoice.pending, (state) => {
+            .addCase(updateGoal.pending, (state) => {
                 state.status = 'pending';
             });
     },
 });
 
-export const { resetStatus, selectedChoice } = updateChoiceSlice.actions;
-export default updateChoiceSlice.reducer;
+export const { resetStatus, selectedChoice } = updateGoalSlice.actions;
+export default updateGoalSlice.reducer;
