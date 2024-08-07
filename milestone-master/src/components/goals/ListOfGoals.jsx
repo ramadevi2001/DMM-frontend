@@ -9,6 +9,11 @@ import GenericTable from "../common/GenericTable";
 import AddGoal from "./AddGoal";
 import { addGoal } from "./slices/addGoal.slice";
 import { selectedChoice as selectedChoiceDispatch } from "../choices/slices/choices.slice";
+import DeleteConfirmation from "./DeleteConfirmation";
+import { deleteGoal } from "./slices/deleteGoals.slice";
+
+
+
 
 
 const GoalsList = () => {
@@ -26,6 +31,8 @@ const GoalsList = () => {
   const [selectedChoice, setSelectedChoice] = useState(selectedFromChoice);
 
   const [openAddModal, setOpenAddModal] = useState(false)
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
 
@@ -77,13 +84,24 @@ const GoalsList = () => {
   };
 
   const handleDelete = (id) => {
-    // setDeleteId(id);
-    // setOpenDeleteModal(true);
+    setDeleteId(id);
+    setOpenDeleteModal(true);
   };
 
   const handleCellClick = (id) => {
     dispatch(selectedGoal(id));
     // navigate("/goals");
+  };
+
+
+  const handleConfirmDelete = () => {
+    if (deleteId !== null) {
+      dispatch(deleteGoal(deleteId));
+      setDeleteId(null);
+      setOpenDeleteModal(false);
+      dispatch(getGoals());
+      navigate("/goals");
+    }
   };
 
   const handleAddGoal = (inputData) => {
@@ -165,6 +183,11 @@ const GoalsList = () => {
         open={openAddModal}
         handleClose={() => setOpenAddModal(false)}
         handleAddGoal={handleAddGoal}
+      />
+       <DeleteConfirmation
+        open={openDeleteModal}
+        handleClose={() => setOpenDeleteModal(false)}
+        handleConfirm={handleConfirmDelete}
       />
     </>
   );
