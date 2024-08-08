@@ -82,6 +82,20 @@ const Homepage = () => {
               >
                 Goals
               </Link>
+              <Link
+                className={styles.button}
+                to="/monthly-goals"
+                style={{
+                  backgroundColor: location.pathname === "/monthly-goals" ? "white" : "inherit",
+                  color: location.pathname === "/monthly-goals" ? "black" : "inherit",
+                  padding: '10px 15px',
+                  borderRadius: '5px',
+                  textDecoration: "none",
+                  marginLeft: '10px'
+                }}
+              >
+                Monthly Goals
+              </Link>
               <Button
                 onClick={handleMenuOpen}
                 sx={{ml:2}}
