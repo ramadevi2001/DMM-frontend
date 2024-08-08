@@ -118,7 +118,8 @@ const GoalsList = () => {
 
   const handleCellClick = (id) => {
     dispatch(selectedGoal(id));
-    navigate("/goals");
+    alert("selected goalid: " + id)
+    navigate("/monthly-goals");
   };
 
   const handleConfirmDelete = () => {
