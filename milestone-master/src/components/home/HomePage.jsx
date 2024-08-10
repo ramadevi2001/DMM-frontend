@@ -53,7 +53,7 @@ const Homepage = () => {
 
         {/* Third Box: Navigation Links and User Menu */}
         <Box sx={{ flexBasis: '45%', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
-          {token ? (
+          {token && token !== null ? (
             <>
               <Link
                 className={styles.button}
