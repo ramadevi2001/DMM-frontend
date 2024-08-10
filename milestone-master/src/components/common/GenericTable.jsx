@@ -25,6 +25,7 @@ const GenericTable = ({
   handleChangePage,
   handleChangeRowsPerPage,
   rowKey = "id",
+  count=0, // Total number of filtered records
 }) => {
   return (
     <Paper sx={{ width: "100%" }}>
@@ -58,35 +59,35 @@ const GenericTable = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((row, index) => (
+            {data.map((row) => (
               <TableRow key={row[rowKey]}>
                 {Object.keys(row).map(
                   (key, colIndx) =>
                     key !== rowKey && (
-                    
                       <TableCell
-                      key={key}
-                      sx={{
-                        fontWeight: "bold",
-                        color: colIndx === 1 ? "blue" : "inherit",
-                        textDecoration: colIndx === 1 ? "underline" : "none",
-                        cursor: colIndx === 1 ? "pointer" : "default",
-                        padding: "2px",
-                        fontSize: "10px",
-                      }}
-                      onClick={() => colIndx === 1 && onCellClick(row[rowKey])}
-                    >
+                        key={key}
+                        sx={{
+                          fontWeight: "bold",
+                          color: colIndx === 1 ? "blue" : "inherit",
+                          textDecoration: colIndx === 1 ? "underline" : "none",
+                          cursor: colIndx === 1 ? "pointer" : "default",
+                          padding: "2px",
+                          fontSize: "10px",
+                        }}
+                        onClick={() => colIndx === 1 && onCellClick(row[rowKey])}
+                      >
                         {row[key]}
                       </TableCell>
-
-                      
                     )
                 )}
                 <TableCell sx={{ padding: "2px", fontSize: "10px" }}>
                   <IconButton onClick={() => onEdit(row)} color="primary">
                     <EditIcon />
                   </IconButton>
-                  <IconButton onClick={() => onDelete(row[rowKey])} color="secondary">
+                  <IconButton
+                    onClick={() => onDelete(row[rowKey])}
+                    color="secondary"
+                  >
                     <DeleteIcon />
                   </IconButton>
                 </TableCell>
@@ -97,12 +98,12 @@ const GenericTable = ({
       </TableContainer>
       <TablePagination
         component="div"
-        count={data.length}
+        count={count} // Reflect total number of filtered records
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        rowsPerPageOptions={[4, 8, 12, 20]}
+        rowsPerPageOptions={[2, 3, 4, 8, 12, 20]}
       />
     </Paper>
   );
