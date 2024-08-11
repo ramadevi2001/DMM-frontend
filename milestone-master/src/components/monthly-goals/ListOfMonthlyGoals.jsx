@@ -23,12 +23,16 @@ import GenericTable from "../common/GenericTable";
 import { selectedGoal as selectedGoalDispatch } from "../goals/slices/listgoals.slice";
 import AddMonthlyGoal from "./AddMonthlyGoal";
 import { addMonthlyGoal } from "./slices/addMonthlyGoals.slice";
+import { deleteMonthlyGoal } from "./slices/deleteMonthlyGoal.slice";
+import DeleteConfirmation from "./DeleteConfirmation";
 
 const MonthlyGoals = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const monthlyGoals = useSelector((state) => state.listMonthlyGoals.monthlyGoals);
+  const monthlyGoals = useSelector(
+    (state) => state.listMonthlyGoals.monthlyGoals
+  );
   const goals = useSelector((state) => state.listGoals.goals);
   const selectedFromGoal = useSelector((state) => state.listGoals.selectedGoal);
 
@@ -36,6 +40,9 @@ const MonthlyGoals = () => {
   const [rowsPerPage, setRowsPerPage] = useState(3);
   const [searchTerm, setSearchTerm] = useState("");
   const [openAddModal, setOpenAddModal] = useState(false);
+
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     if (selectedFromGoal) {
@@ -71,11 +78,9 @@ const MonthlyGoals = () => {
 
   const handleAddMonthlyGoal = (inputData) => {
     dispatch(addMonthlyGoal(inputData));
-    setTimeout(()=>{
-
+    setTimeout(() => {
       dispatch(getMonthlyGoalsByGoal(selectedFromGoal));
-    }, 2000)
-
+    }, 2000);
   };
 
   const handleCellClick = (id) => {
@@ -89,6 +94,19 @@ const MonthlyGoals = () => {
 
   const handleDelete = (id) => {
     // Handle delete action here (open confirmation modal, etc.)
+    alert("Are you sure you want to delete");
+    setDeleteId(id);
+    setOpenDeleteModal(true);
+  };
+
+  const handleConfirmDelete = () => {
+    if (deleteId !== null) {
+      dispatch(deleteMonthlyGoal(deleteId));
+      setDeleteId(null);
+      setOpenDeleteModal(false);
+      dispatch(getMonthlyGoalsByGoal(selectedFromGoal));
+      navigate("/monthly-goals");
+    }
   };
 
   return (
@@ -99,7 +117,11 @@ const MonthlyGoals = () => {
             <Grid item xs={2}>
               <FormControl fullWidth>
                 <InputLabel>Goals</InputLabel>
-                <Select value={selectedFromGoal} onChange={handleGoalChange} label="Goals">
+                <Select
+                  value={selectedFromGoal}
+                  onChange={handleGoalChange}
+                  label="Goals"
+                >
                   {goals.map((goal) => (
                     <MenuItem key={goal.id} value={goal.id}>
                       {goal.goal}
@@ -120,7 +142,11 @@ const MonthlyGoals = () => {
               </Button>
             </Grid>
             <Grid item xs={4}>
-              <Typography variant="h6" align="center" sx={{ fontWeight: "bold", color: "#3f51b5" }}>
+              <Typography
+                variant="h6"
+                align="center"
+                sx={{ fontWeight: "bold", color: "#3f51b5" }}
+              >
                 Your Monthly Goals
               </Typography>
             </Grid>
@@ -138,8 +164,13 @@ const MonthlyGoals = () => {
 
         {filteredMonthlyGoals.length > 0 ? (
           <GenericTable
-            data={filteredMonthlyGoals.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
-            headers={Object.keys(filteredMonthlyGoals[0] || {}).filter((key) => key !== "id")}
+            data={filteredMonthlyGoals.slice(
+              page * rowsPerPage,
+              page * rowsPerPage + rowsPerPage
+            )}
+            headers={Object.keys(filteredMonthlyGoals[0] || {}).filter(
+              (key) => key !== "id"
+            )}
             onCellClick={handleCellClick}
             onEdit={handleEdit}
             onDelete={handleDelete}
@@ -153,7 +184,16 @@ const MonthlyGoals = () => {
           <h2>No Monthly Goals Yet</h2>
         )}
       </Box>
-      <AddMonthlyGoal open={openAddModal} handleClose={() => setOpenAddModal(false)} handleAddMonthlyGoal={handleAddMonthlyGoal} />
+      <AddMonthlyGoal
+        open={openAddModal}
+        handleClose={() => setOpenAddModal(false)}
+        handleAddMonthlyGoal={handleAddMonthlyGoal}
+      />
+      <DeleteConfirmation
+        open={openDeleteModal}
+        handleClose={() => setOpenDeleteModal(false)}
+        handleConfirm={handleConfirmDelete}
+      />
     </>
   );
 };
