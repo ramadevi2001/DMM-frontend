@@ -25,6 +25,8 @@ import AddMonthlyGoal from "./AddMonthlyGoal";
 import { addMonthlyGoal } from "./slices/addMonthlyGoals.slice";
 import { deleteMonthlyGoal } from "./slices/deleteMonthlyGoal.slice";
 import DeleteConfirmation from "./DeleteConfirmation";
+import UpdateMonthlyGoal from "./UpdateMonthlyGoal";
+import { updateMonthlyGoal } from "./slices/updateMonthlyGoal.slice"
 
 const MonthlyGoals = () => {
   const dispatch = useDispatch();
@@ -43,6 +45,9 @@ const MonthlyGoals = () => {
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [updateMonthlyGoalData, setUpdateMonthlyGoalData] = useState({});
 
   useEffect(() => {
     if (selectedFromGoal) {
@@ -90,6 +95,9 @@ const MonthlyGoals = () => {
 
   const handleEdit = (monthlyGoal) => {
     // Handle edit action here (set up modals, etc.)
+
+    setOpenUpdateModal(true);
+    setUpdateMonthlyGoalData(monthlyGoal);
   };
 
   const handleDelete = (id) => {
@@ -108,6 +116,22 @@ const MonthlyGoals = () => {
       navigate("/monthly-goals");
     }
   };
+
+  
+  const handleUpdateMonthlyGoal = (inputData) => {
+    const data = {
+      id: updateMonthlyGoalData.id,
+      goal: selectedFromGoal,
+    };
+    const inputPayload = { ...data, ...inputData };
+    dispatch(updateMonthlyGoal(inputPayload));
+    dispatch(getMonthlyGoalsByGoal(selectedFromGoal));
+    setOpenUpdateModal(false);
+    navigate("/monthly-goals");
+  };
+
+
+
 
   return (
     <>
@@ -194,6 +218,13 @@ const MonthlyGoals = () => {
         handleClose={() => setOpenDeleteModal(false)}
         handleConfirm={handleConfirmDelete}
       />
+      <UpdateMonthlyGoal
+       open = {openUpdateModal}
+       handleClose = {() => setOpenUpdateModal(false)}
+       handleUpdateMonthlyGoal = {handleUpdateMonthlyGoal}
+       existingMonthlyGoal={updateMonthlyGoalData}
+      />
+      
     </>
   );
 };
