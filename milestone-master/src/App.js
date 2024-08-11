@@ -9,6 +9,7 @@ import styles from "./components/home/css/Homepage.module.css";
 import Choices from "./components/choices/Choices";
 import Goals from "./components/goals/Goals";
 import MonthlyGoals from "./components/monthly-goals/MonthlyGoals";
+import Habits from "./components/habits/Habits";
 
 const App = () => {
   const token = localStorage.getItem("token");
@@ -26,6 +27,8 @@ const App = () => {
             <Route path="/choices" element={<Choices />} />
             <Route path="/goals" element={<Goals />} />
             <Route path="/monthly-goals" element={<MonthlyGoals/>}/>
+            <Route path="/habits" element={<Habits/>}/>
+            
 
             </>
           ) : (

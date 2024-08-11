@@ -52,7 +52,7 @@ const Homepage = () => {
         </Box>
 
         {/* Third Box: Navigation Links and User Menu */}
-        <Box sx={{ flexBasis: '45%', display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
+        <Box sx={{ flexBasis: '45%', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop:"1%" }}>
           {token && token !== null ? (
             <>
               <Link
@@ -61,7 +61,6 @@ const Homepage = () => {
                 style={{
                   backgroundColor: location.pathname === "/choices" ? "white" : "inherit",
                   color: location.pathname === "/choices" ? "black" : "inherit",
-                  padding: '10px 15px',
                   borderRadius: '5px',
                   textDecoration: "none",
                 }}
@@ -74,7 +73,6 @@ const Homepage = () => {
                 style={{
                   backgroundColor: location.pathname === "/goals" ? "white" : "inherit",
                   color: location.pathname === "/goals" ? "black" : "inherit",
-                  padding: '10px 15px',
                   borderRadius: '5px',
                   textDecoration: "none",
                   marginLeft: '10px'
@@ -88,13 +86,25 @@ const Homepage = () => {
                 style={{
                   backgroundColor: location.pathname === "/monthly-goals" ? "white" : "inherit",
                   color: location.pathname === "/monthly-goals" ? "black" : "inherit",
-                  padding: '10px 15px',
                   borderRadius: '5px',
                   textDecoration: "none",
                   marginLeft: '10px'
                 }}
               >
                 Monthly Goals
+              </Link>
+              <Link
+                className={styles.button}
+                to="/habits"
+                style={{
+                  backgroundColor: location.pathname === "/habits" ? "white" : "inherit",
+                  color: location.pathname === "/habits" ? "black" : "inherit",
+                  borderRadius: '5px',
+                  textDecoration: "none",
+                  marginLeft: '10px'
+                }}
+              >
+                Habits
               </Link>
               <Button
                 onClick={handleMenuOpen}
