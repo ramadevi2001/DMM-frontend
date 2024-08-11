@@ -59,7 +59,7 @@ const GoalsList = () => {
     }
     // Assuming there's an action to fetch choices
     // dispatch(getChoices());
-  }, [dispatch]);
+  }, [dispatch, selectedChoice]);
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value.toLowerCase());
@@ -127,7 +127,7 @@ const GoalsList = () => {
       dispatch(deleteGoal(deleteId));
       setDeleteId(null);
       setOpenDeleteModal(false);
-      dispatch(getGoals());
+      dispatch(getGoalsByChoice(selectedChoice));
       navigate("/goals");
     }
   };
