@@ -25,7 +25,7 @@ const GenericTable = ({
   handleChangePage,
   handleChangeRowsPerPage,
   rowKey = "id",
-  count=0, // Total number of filtered records
+  count = 0, // Total number of filtered records
 }) => {
   return (
     <Paper sx={{ width: "100%" }}>
@@ -76,7 +76,11 @@ const GenericTable = ({
                         }}
                         onClick={() => colIndx === 1 && onCellClick(row[rowKey])}
                       >
-                        {row[key]}
+                        {Array.isArray(row[key])
+                          ? row[key].map((item, index) => (
+                              <div key={index}>{item}</div>
+                            ))
+                          : row[key]}
                       </TableCell>
                     )
                 )}

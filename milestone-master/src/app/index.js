@@ -16,6 +16,7 @@ import addMonthlyGoalsReducder from '../components/monthly-goals/slices/addMonth
 import deleteMonthlyGoalsReducer from '../components/monthly-goals/slices/deleteMonthlyGoal.slice';
 import updateMonthlyGoalReducer  from '../components/monthly-goals/slices/updateMonthlyGoal.slice';
 import listOfHabitsReducer from '../components/habits/slices/listOfHabits.slice'
+import listOfObservationsReducer from '../components/observations/slices/listObservations.slice'
 const rootReducer = combineReducers({
     signup: signupReducer,
     login: loginReducer,
@@ -31,7 +32,8 @@ const rootReducer = combineReducers({
     addMonthlyGoal: addMonthlyGoalsReducder,
     deleteMonthlyGoal: deleteMonthlyGoalsReducer,
     updateMonthlyGoal: updateMonthlyGoalReducer,
-    listHabits: listOfHabitsReducer
+    listHabits: listOfHabitsReducer,
+    listObservations: listOfObservationsReducer
   });
  
 
