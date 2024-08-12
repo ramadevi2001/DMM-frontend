@@ -31,8 +31,27 @@ const Homepage = () => {
     <AppBar position="static" sx={{ backgroundColor: "rgb(21, 100, 104)" }}>
       <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
         {/* First Box: Logo */}
-        <Box sx={{ flexBasis: '25%' }}>
+        <Box sx={{ flexBasis: '10%' }}>
           <img src="/path-to-logo.png" alt="Logo" className={styles.logo} style={{ maxHeight: 50 }} />
+
+        </Box>
+
+        <Box sx={{flexBasis: '15%'}}>
+
+        <Link
+                className={styles.button}
+                to="/observations"
+                style={{
+                  backgroundColor: location.pathname === "/observations" ? "white" : "inherit",
+                  color: location.pathname === "/observations" ? "black" : "inherit",
+                  borderRadius: '5px',
+                  textDecoration: "none",
+                  marginLeft: '10px'
+                }}
+              >
+              Observations
+              </Link>
+
         </Box>
 
         {/* Second Box: Title */}
@@ -53,7 +72,7 @@ const Homepage = () => {
 
         {/* Third Box: Navigation Links and User Menu */}
         <Box sx={{ flexBasis: '45%', display: 'flex', justifyContent: 'flex-end', alignItems: 'center', marginTop:"1%" }}>
-          {token && token !== null ? (
+          {token ? (
             <>
               <Link
                 className={styles.button}
