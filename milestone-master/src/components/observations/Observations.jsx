@@ -1,4 +1,5 @@
 import Quote from '../common/Quote';
+import ObservationsList from './ListObservations';
 
 
 const Observations = ()=>{
@@ -7,6 +8,7 @@ const Observations = ()=>{
     return (
         <>
           <Quote  heading={"Observation"} message={"Observe your life and find problems, Ideas"}/>
+          <ObservationsList />
         
         </>
     )
