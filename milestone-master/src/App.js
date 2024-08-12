@@ -10,6 +10,7 @@ import Choices from "./components/choices/Choices";
 import Goals from "./components/goals/Goals";
 import MonthlyGoals from "./components/monthly-goals/MonthlyGoals";
 import Habits from "./components/habits/Habits";
+import Observations from "./components/observations/Observations";
 
 const App = () => {
   const token = localStorage.getItem("token");
@@ -28,6 +29,7 @@ const App = () => {
             <Route path="/goals" element={<Goals />} />
             <Route path="/monthly-goals" element={<MonthlyGoals/>}/>
             <Route path="/habits" element={<Habits/>}/>
+            <Route path="/observations" element={<Observations/>}/>
             
 
             </>
