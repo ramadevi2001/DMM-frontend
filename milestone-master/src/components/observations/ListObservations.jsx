@@ -10,7 +10,8 @@ import GenericTable from "../common/GenericTable";
 import AddObservation from "./AddObservation";
 import { addObservation } from "./slices/addObservation.slice";
 import UpdateObservation from "./UpdateObservation";
-
+import { deleteObservation } from "./slices/deleteObservation.slice";
+import DeleteConfirmation from "./DeleteConfirmation";
 const ObservationsList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -27,6 +28,9 @@ const ObservationsList = () => {
 
   const [openUpdateModal, setOpenUpdateModal] = useState(false);
   const [updateObservationData, setUpdateObservationData] = useState({});
+
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   useEffect(() => {
     dispatch(getObservations());
@@ -71,6 +75,11 @@ const ObservationsList = () => {
     setUpdateObservationData(observation);
   };
 
+  const handleDelete = (id) => {
+    setDeleteId(id);
+    setOpenDeleteModal(true);
+  };
+
   const handleUpdateObservation = (inputData) => {
     const data = {
       id: updateObservationData.id,
@@ -86,12 +95,25 @@ const ObservationsList = () => {
     navigate("/observations");
   };
 
+
+  const handleConfirmDelete = () => {
+    if (deleteId !== null) {
+      dispatch(deleteObservation(deleteId));
+      setDeleteId(null);
+      setOpenDeleteModal(false);
+      setTimeout(() => {
+        dispatch(getObservations());
+      }, 2000);
+      navigate("/observations");
+    }
+  };
+
   return (
     <>
       <Box sx={{ width: "75%", marginTop: "1%", border: "5px solid #92918e" }}>
         <Box p={1} sx={{ backgroundColor: "white" }}>
           <Grid container spacing={1} alignItems="center">
-            <Grid item xs={2}>
+            <Grid item xs={3}>
               <Button
                 variant="contained"
                 color="primary"
@@ -102,7 +124,7 @@ const ObservationsList = () => {
                 Add Observation
               </Button>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={5}>
               <Typography
                 variant="h6"
                 align="center"
@@ -131,7 +153,7 @@ const ObservationsList = () => {
             )}
             onCellClick={handleCellClick}
             onEdit={handleEdit}
-            // onDelete={handleDelete}
+            onDelete={handleDelete}
             page={page}
             rowsPerPage={rowsPerPage}
             handleChangePage={handleChangePage}
@@ -147,6 +169,12 @@ const ObservationsList = () => {
         open={openAddModal}
         handleClose={() => setOpenAddModal(false)}
         handleAddObservation={handleAddObservation}
+      />
+
+       <DeleteConfirmation
+        open={openDeleteModal}
+        handleClose={() => setOpenDeleteModal(false)}
+        handleConfirm={handleConfirmDelete}
       />
 
       <UpdateObservation
