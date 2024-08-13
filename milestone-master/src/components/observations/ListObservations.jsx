@@ -2,30 +2,31 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getObservations } from "./slices/listObservations.slice";
-import {
-  Box,
-  Grid,
-  Button,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, Button, TextField, Typography } from "@mui/material";
+import { updateObservation } from "./slices/updateObservation.slice";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import GenericTable from "../common/GenericTable";
 import AddObservation from "./AddObservation";
 import { addObservation } from "./slices/addObservation.slice";
+import UpdateObservation from "./UpdateObservation";
 
 const ObservationsList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const observations = useSelector((state) => state.listObservations.observations);
+  const observations = useSelector(
+    (state) => state.listObservations.observations
+  );
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(4);
   const [searchTerm, setSearchTerm] = useState("");
 
   const [openAddModal, setOpenAddModal] = useState(false);
+
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [updateObservationData, setUpdateObservationData] = useState({});
 
   useEffect(() => {
     dispatch(getObservations());
@@ -49,10 +50,9 @@ const ObservationsList = () => {
     Object.values(observation).join(" ").toLowerCase().includes(searchTerm)
   );
 
-  const observationsToDisplay = filteredObservations.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  ).map(({ id, user, ...rest }) => ({ id, ...rest }));
+  const observationsToDisplay = filteredObservations
+    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    .map(({ id, user, ...rest }) => ({ id, ...rest }));
 
   const handleCellClick = (id) => {
     alert("Selected observationId: " + id);
@@ -64,6 +64,26 @@ const ObservationsList = () => {
     setTimeout(() => {
       dispatch(getObservations());
     }, 1000);
+  };
+
+  const handleEdit = (observation) => {
+    setOpenUpdateModal(true);
+    setUpdateObservationData(observation);
+  };
+
+  const handleUpdateObservation = (inputData) => {
+    const data = {
+      id: updateObservationData.id,
+    };
+    const inputPayload = { ...data, ...inputData };
+    console.log("updadteObservation payload: " + inputPayload);
+
+    dispatch(updateObservation(inputPayload));
+    setTimeout(() => {
+      dispatch(getObservations());
+    }, 2000);
+    setOpenUpdateModal(false);
+    navigate("/observations");
   };
 
   return (
@@ -110,6 +130,8 @@ const ObservationsList = () => {
               (key) => key !== "id" && key !== "user"
             )}
             onCellClick={handleCellClick}
+            onEdit={handleEdit}
+            // onDelete={handleDelete}
             page={page}
             rowsPerPage={rowsPerPage}
             handleChangePage={handleChangePage}
@@ -125,6 +147,13 @@ const ObservationsList = () => {
         open={openAddModal}
         handleClose={() => setOpenAddModal(false)}
         handleAddObservation={handleAddObservation}
+      />
+
+      <UpdateObservation
+        open={openUpdateModal}
+        handleClose={() => setOpenUpdateModal(false)}
+        handleUpdateObservation={handleUpdateObservation}
+        existingObservation={updateObservationData}
       />
     </>
   );
