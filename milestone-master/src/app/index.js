@@ -20,6 +20,7 @@ import listOfObservationsReducer from '../components/observations/slices/listObs
 import addObservationReducer from '../components/observations/slices/addObservation.slice';
 import updateObservationReducer from '../components/observations/slices/updateObservation.slice';
 import deleteObservationReducer from '../components/observations/slices/deleteObservation.slice';
+import addHabitReducer from '../components/habits/slices/addHabit.slice'
 const rootReducer = combineReducers({
     signup: signupReducer,
     login: loginReducer,
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
     addObservation:addObservationReducer,
     updateObservation: updateObservationReducer,
     deleteObservation: deleteObservationReducer,
+    addHabit: addHabitReducer,
   });
  
 

@@ -18,8 +18,8 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import GenericTable from "../common/GenericTable";
-// import AddHabit from "./AddHabit";
-// import { addHabit } from "./slices/addHabit.slice";
+import AddHabit from "./AddHabit";
+import { addHabit } from "./slices/addHabit.slice";
 // import { deleteHabit } from "./slices/deleteHabit.slice";
 // import DeleteConfirmation from "./DeleteConfirmation";
 // import UpdateHabit from "./UpdateHabit";
@@ -42,7 +42,7 @@ const ListOfHabits = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   const [selectedMonthlyGoal, setSelectedMonthlyGoal] = useState(selectedFromMonthlyGoal)
-  // const [openAddModal, setOpenAddModal] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
 
   // const [openDeleteModal, setOpenDeleteModal] = useState(false);
   // const [deleteId, setDeleteId] = useState(null);
@@ -93,12 +93,15 @@ const ListOfHabits = () => {
     navigate("/habits");
   };
 
-  // const handleAddHabit = (inputData) => {
-  //   dispatch(addHabit(inputData));
-  //   setTimeout(() => {
-  //     dispatch(getHabitsByMonthlyGoal(selectedFromMonthlyGoal));
-  //   }, 2000);
-  // };
+  const handleAddHabit = (inputData) => {
+    const data = {
+      monthly_goal: selectedFromMonthlyGoal
+    }
+    dispatch(addHabit({...inputData, ...data}));
+    setTimeout(() => {
+      dispatch(getHabitsByMonthlyGoal(selectedFromMonthlyGoal));
+    }, 2000);
+  };
 
   // const handleEdit = (habit) => {
   //   setOpenUpdateModal(true);
@@ -148,7 +151,7 @@ const ListOfHabits = () => {
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                // onClick={() => setOpenAddModal(true)}
+                onClick={() => setOpenAddModal(true)}
                 sx={{ backgroundColor: "rgb(21, 100, 104)" }}
               >
                 Add Habit
@@ -195,12 +198,12 @@ const ListOfHabits = () => {
           <h2>No Habits Yet</h2>
         )}
       </Box>
-      {/* 
       <AddHabit
         open={openAddModal}
         handleClose={() => setOpenAddModal(false)}
         handleAddHabit={handleAddHabit}
       />
+      {/* 
       <DeleteConfirmation
         open={openDeleteModal}
         handleClose={() => setOpenDeleteModal(false)}
