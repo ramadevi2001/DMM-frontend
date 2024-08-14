@@ -14,6 +14,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
+  Button
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import GenericTable from "../common/GenericTable";
@@ -23,7 +24,7 @@ import GenericTable from "../common/GenericTable";
 // import DeleteConfirmation from "./DeleteConfirmation";
 // import UpdateHabit from "./UpdateHabit";
 // import { updateHabit } from "./slices/updateHabit.slice";
-
+import AddIcon from "@mui/icons-material/Add";
 const ListOfHabits = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -82,6 +83,11 @@ const ListOfHabits = () => {
     Object.values(habit).join(" ").toLowerCase().includes(searchTerm)
   );
 
+  const habitsToDisplay = filteredHabits
+  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+  .map(({ id, user, monthly_goal, is_done, ...rest }) => ({ id,  ...rest , is_done: is_done.toString()  }));
+
+
   const handleCellClick = (id) => {
     // dispatch(selectedHabit(id));
     navigate("/habits");
@@ -136,19 +142,19 @@ const ListOfHabits = () => {
                 </Select>
               </FormControl>
             </Grid>
-            {/* 
+            
             <Grid item xs={2}>
               <Button
                 variant="contained"
                 color="primary"
                 startIcon={<AddIcon />}
-                onClick={() => setOpenAddModal(true)}
+                // onClick={() => setOpenAddModal(true)}
                 sx={{ backgroundColor: "rgb(21, 100, 104)" }}
               >
                 Add Habit
               </Button>
             </Grid> 
-            */}
+           
             <Grid item xs={4}>
               <Typography
                 variant="h6"
@@ -172,12 +178,9 @@ const ListOfHabits = () => {
 
         {filteredHabits.length > 0 ? (
           <GenericTable
-            data={filteredHabits.slice(
-              page * rowsPerPage,
-              page * rowsPerPage + rowsPerPage
-            )}
+            data={habitsToDisplay}
             headers={Object.keys(filteredHabits[0] || {}).filter(
-              (key) => key !== "id"
+              (key) => key !== "id" && key !== "user" && key !== "monthly_goal"
             )}
             onCellClick={handleCellClick}
             // onEdit={handleEdit}
