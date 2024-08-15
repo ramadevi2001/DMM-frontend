@@ -78,7 +78,7 @@ const GoalsList = () => {
     setSelectedChoice(event.target.value);
     // Call a function with the ID of the selected choice
     dispatch(selectedChoiceDispatch(event.target.value));
-    alert(event.target.value);
+    // alert(event.target.value);
     dispatch(getGoalsByChoice(event.target.value));
   };
 
@@ -103,8 +103,8 @@ const GoalsList = () => {
     const inputPayload = { ...data, ...inputData };
     console.log("updadtegoal payload: " + inputPayload)
 
-    alert(inputPayload)
-    alert("seelected choice: " + selectedFromChoice)
+    // alert(inputPayload)
+    // alert("seelected choice: " + selectedFromChoice)
     dispatch(updateGoal(inputPayload));
     dispatch(getGoalsByChoice(selectedFromChoice));
     setOpenUpdateModal(false);
@@ -118,7 +118,7 @@ const GoalsList = () => {
 
   const handleCellClick = (id) => {
     dispatch(selectedGoal(id));
-    alert("selected goalid: " + id)
+    // alert("selected goalid: " + id)
     navigate("/monthly-goals");
   };
 

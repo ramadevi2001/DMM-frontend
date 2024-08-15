@@ -102,7 +102,7 @@ const MonthlyGoals = () => {
 
   const handleDelete = (id) => {
     // Handle delete action here (open confirmation modal, etc.)
-    alert("Are you sure you want to delete");
+    // alert("Are you sure you want to delete");
     setDeleteId(id);
     setOpenDeleteModal(true);
   };
