@@ -20,8 +20,8 @@ import { useNavigate } from "react-router-dom";
 import GenericTable from "../common/GenericTable";
 import AddHabit from "./AddHabit";
 import { addHabit } from "./slices/addHabit.slice";
-// import { deleteHabit } from "./slices/deleteHabit.slice";
-// import DeleteConfirmation from "./DeleteConfirmation";
+import { deleteHabit } from "./slices/deleteHabit.slice";
+import DeleteConfirmation from "./DeleteConfirmation";
 // import UpdateHabit from "./UpdateHabit";
 // import { updateHabit } from "./slices/updateHabit.slice";
 import AddIcon from "@mui/icons-material/Add";
@@ -44,8 +44,8 @@ const ListOfHabits = () => {
   const [selectedMonthlyGoal, setSelectedMonthlyGoal] = useState(selectedFromMonthlyGoal)
   const [openAddModal, setOpenAddModal] = useState(false);
 
-  // const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  // const [deleteId, setDeleteId] = useState(null);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
 
   // const [openUpdateModal, setOpenUpdateModal] = useState(false);
   // const [updateHabitData, setUpdateHabitData] = useState({});
@@ -108,21 +108,21 @@ const ListOfHabits = () => {
   //   setUpdateHabitData(habit);
   // };
 
-  // const handleDelete = (id) => {
-  //   alert("Are you sure you want to delete");
-  //   setDeleteId(id);
-  //   setOpenDeleteModal(true);
-  // };
+  const handleDelete = (id) => {
+    alert("Are you sure you want to delete");
+    setDeleteId(id);
+    setOpenDeleteModal(true);
+  };
 
-  // const handleConfirmDelete = () => {
-  //   if (deleteId !== null) {
-  //     dispatch(deleteHabit(deleteId));
-  //     setDeleteId(null);
-  //     setOpenDeleteModal(false);
-  //     dispatch(getHabitsByMonthlyGoal(selectedFromMonthlyGoal));
-  //     navigate("/habits");
-  //   }
-  // };
+  const handleConfirmDelete = () => {
+    if (deleteId !== null) {
+      dispatch(deleteHabit(deleteId));
+      setDeleteId(null);
+      setOpenDeleteModal(false);
+      dispatch(getHabitsByMonthlyGoal(selectedFromMonthlyGoal));
+      navigate("/habits");
+    }
+  };
 
   return (
     <>
@@ -187,7 +187,7 @@ const ListOfHabits = () => {
             )}
             onCellClick={handleCellClick}
             // onEdit={handleEdit}
-            // onDelete={handleDelete}
+            onDelete={handleDelete}
             page={page}
             rowsPerPage={rowsPerPage}
             handleChangePage={handleChangePage}
@@ -203,12 +203,12 @@ const ListOfHabits = () => {
         handleClose={() => setOpenAddModal(false)}
         handleAddHabit={handleAddHabit}
       />
-      {/* 
       <DeleteConfirmation
         open={openDeleteModal}
         handleClose={() => setOpenDeleteModal(false)}
         handleConfirm={handleConfirmDelete}
       />
+      {/* 
       <UpdateHabit
        open = {openUpdateModal}
        handleClose = {() => setOpenUpdateModal(false)}
