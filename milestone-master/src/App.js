@@ -13,7 +13,8 @@ import Habits from "./components/habits/Habits";
 import Observations from "./components/observations/Observations";
 
 const App = () => {
-  const token = localStorage.getItem("token");
+ 
+
 
   return (
     <Router>
@@ -23,7 +24,7 @@ const App = () => {
           <Route path="/" element={<ReferenceBooks />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          {token  ? (
+          {localStorage.getItem("token")  ? (
             <>
             <Route path="/choices" element={<Choices />} />
             <Route path="/goals" element={<Goals />} />
