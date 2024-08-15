@@ -11,7 +11,7 @@ import {
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import styles from "./css/Homepage.module.css"; // Assuming you have appropriate CSS in this file
-import { resetStatus } from "./slices/loginSlice";
+import logoImage from "../../assets/images/logo2.png";
 const Homepage = () => {
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
@@ -40,7 +40,7 @@ const Homepage = () => {
         {/* First Box: Logo */}
         <Box sx={{ flexBasis: "10%" }}>
           <img
-            src="/path-to-logo.png"
+            src={logoImage}
             alt="Logo"
             className={styles.logo}
             style={{ maxHeight: 50 }}

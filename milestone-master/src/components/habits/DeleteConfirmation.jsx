@@ -17,7 +17,7 @@ import { resetStatus } from "./slices/deleteHabit.slice";
 import { getHabits } from "./slices/listOfHabits.slice";
 import { useNavigate } from "react-router-dom";
 
-const DeleteHabitConfirmation = ({ open, handleClose, handleConfirm }) => {
+const DeleteConfirmation = ({ open, handleClose, handleConfirm }) => {
   const habitState = useSelector((state) => state.deleteHabit);
   const { status, error } = habitState;
   const dispatch = useDispatch();
@@ -77,4 +77,4 @@ const DeleteHabitConfirmation = ({ open, handleClose, handleConfirm }) => {
   );
 };
 
-export default DeleteHabitConfirmation;
+export default DeleteConfirmation;

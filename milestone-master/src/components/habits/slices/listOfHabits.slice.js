@@ -22,6 +22,16 @@ export const getHabitsByMonthlyGoal = createAsyncThunk('habits/get/monthlyGoal',
     return response;
 });
 
+
+export const getHabitsByDate = createAsyncThunk('habits/get/byDate', async (date) => {
+    const response = await handleFetch(`/api/habits/date/${date}/`, {
+        method: 'GET',
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem("token")
+        }
+    });
+    return response;
+});
 // Slice for managing state
 const habitsSlice = createSlice({
     name: 'habits',
@@ -55,7 +65,18 @@ const habitsSlice = createSlice({
             })
             .addCase(getHabitsByMonthlyGoal.pending, (state) => {
                 state.status = 'pending';
-            });
+            })  
+            .addCase(getHabitsByDate.fulfilled, (state, action) => {
+                state.habits = action.payload;
+                state.status = 'success';
+            })
+            .addCase(getHabitsByDate.rejected, (state, action) => {
+                state.error = action.error;
+                state.status = 'failed';
+            })
+            .addCase(getHabitsByDate.pending, (state) => {
+                state.status = 'pending';
+            })
     },
 });
 

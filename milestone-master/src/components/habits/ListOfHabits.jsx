@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   getHabits,
+  getHabitsByDate,
   getHabitsByMonthlyGoal,
 } from "./slices/listOfHabits.slice";
 import {
@@ -14,7 +15,7 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Button
+  Button,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import GenericTable from "../common/GenericTable";
@@ -22,9 +23,13 @@ import AddHabit from "./AddHabit";
 import { addHabit } from "./slices/addHabit.slice";
 import { deleteHabit } from "./slices/deleteHabit.slice";
 import DeleteConfirmation from "./DeleteConfirmation";
-// import UpdateHabit from "./UpdateHabit";
-// import { updateHabit } from "./slices/updateHabit.slice";
+import UpdateHabit from "./HabitUpdate";
+import { updateHabit } from "./slices/updateHabit.slice";
 import AddIcon from "@mui/icons-material/Add";
+import InsertChartIcon from "@mui/icons-material/InsertChart";
+import VerticalSplitIcon from "@mui/icons-material/VerticalSplit";
+import TodayHabits from "./TodayHabits";
+import ProductivityChartPopup from "./ProductivityChart";
 const ListOfHabits = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -41,14 +46,19 @@ const ListOfHabits = () => {
   const [rowsPerPage, setRowsPerPage] = useState(3);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [selectedMonthlyGoal, setSelectedMonthlyGoal] = useState(selectedFromMonthlyGoal)
+  const [selectedMonthlyGoal, setSelectedMonthlyGoal] = useState(
+    selectedFromMonthlyGoal
+  );
   const [openAddModal, setOpenAddModal] = useState(false);
+  const [openDateModal, setOpenDateModal] = useState(false);
 
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
-  // const [openUpdateModal, setOpenUpdateModal] = useState(false);
-  // const [updateHabitData, setUpdateHabitData] = useState({});
+  const [openUpdateModal, setOpenUpdateModal] = useState(false);
+  const [updateHabitData, setUpdateHabitData] = useState({});
+
+  const [openProductivityModal, setOpenProductivityModal] = useState(false);
 
   useEffect(() => {
     if (selectedFromMonthlyGoal) {
@@ -84,9 +94,12 @@ const ListOfHabits = () => {
   );
 
   const habitsToDisplay = filteredHabits
-  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-  .map(({ id, user, monthly_goal, is_done, ...rest }) => ({ id,  ...rest , is_done: is_done.toString()  }));
-
+    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    .map(({ id, user, monthly_goal, is_done, ...rest }) => ({
+      id,
+      ...rest,
+      is_done: is_done,
+    }));
 
   const handleCellClick = (id) => {
     // dispatch(selectedHabit(id));
@@ -95,21 +108,20 @@ const ListOfHabits = () => {
 
   const handleAddHabit = (inputData) => {
     const data = {
-      monthly_goal: selectedFromMonthlyGoal
-    }
-    dispatch(addHabit({...inputData, ...data}));
+      monthly_goal: selectedFromMonthlyGoal,
+    };
+    dispatch(addHabit({ ...inputData, ...data }));
     setTimeout(() => {
       dispatch(getHabitsByMonthlyGoal(selectedFromMonthlyGoal));
     }, 2000);
   };
 
-  // const handleEdit = (habit) => {
-  //   setOpenUpdateModal(true);
-  //   setUpdateHabitData(habit);
-  // };
+  const handleEdit = (habit) => {
+    setOpenUpdateModal(true);
+    setUpdateHabitData(habit);
+  };
 
   const handleDelete = (id) => {
-    alert("Are you sure you want to delete");
     setDeleteId(id);
     setOpenDeleteModal(true);
   };
@@ -122,6 +134,24 @@ const ListOfHabits = () => {
       dispatch(getHabitsByMonthlyGoal(selectedFromMonthlyGoal));
       navigate("/habits");
     }
+  };
+
+  const handleUpdateHabit = (inputData) => {
+    const data = {
+      id: updateHabitData.id,
+      monthly_goal: selectedFromMonthlyGoal,
+    };
+    const inputPayload = { ...data, ...inputData };
+    dispatch(updateHabit(inputPayload));
+    dispatch(getHabitsByMonthlyGoal(selectedFromMonthlyGoal));
+    setOpenUpdateModal(false);
+    navigate("/habits");
+  };
+
+  const hadleDateFectHabits = (date) => {
+    dispatch(getHabitsByDate(date));
+    setOpenDateModal(false);
+    navigate("/habits");
   };
 
   return (
@@ -145,7 +175,7 @@ const ListOfHabits = () => {
                 </Select>
               </FormControl>
             </Grid>
-            
+
             <Grid item xs={2}>
               <Button
                 variant="contained"
@@ -156,16 +186,29 @@ const ListOfHabits = () => {
               >
                 Add Habit
               </Button>
-            </Grid> 
-           
-            <Grid item xs={4}>
-              <Typography
-                variant="h6"
-                align="center"
-                sx={{ fontWeight: "bold", color: "#3f51b5" }}
+            </Grid>
+
+            <Grid item xs={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<VerticalSplitIcon />}
+                onClick={() => setOpenDateModal(true)}
+                sx={{ backgroundColor: "rgb(21, 100, 104)" }}
               >
-                Your Habits
-              </Typography>
+                Today Habits
+              </Button>
+            </Grid>
+            <Grid item xs={2}>
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<InsertChartIcon />}
+                onClick={() => setOpenProductivityModal(true)}
+                sx={{ backgroundColor: "rgb(21, 100, 104)" }}
+              >
+                Productivity
+              </Button>
             </Grid>
             <Grid item xs={4}>
               <TextField
@@ -186,7 +229,7 @@ const ListOfHabits = () => {
               (key) => key !== "id" && key !== "user" && key !== "monthly_goal"
             )}
             onCellClick={handleCellClick}
-            // onEdit={handleEdit}
+            onEdit={handleEdit}
             onDelete={handleDelete}
             page={page}
             rowsPerPage={rowsPerPage}
@@ -208,14 +251,27 @@ const ListOfHabits = () => {
         handleClose={() => setOpenDeleteModal(false)}
         handleConfirm={handleConfirmDelete}
       />
-      {/* 
-      <UpdateHabit
-       open = {openUpdateModal}
-       handleClose = {() => setOpenUpdateModal(false)}
-       handleUpdateHabit = {handleUpdateHabit}
-       existingHabit={updateHabitData}
+
+      <TodayHabits
+        open={openDateModal}
+        handleClose={() => setOpenDateModal(false)}
+        handleFetchHabits={hadleDateFectHabits}
       />
-      */}
+
+      <UpdateHabit
+        open={openUpdateModal}
+        handleClose={() => setOpenUpdateModal(false)}
+        handleUpdateHabit={handleUpdateHabit}
+        existingHabit={updateHabitData}
+      />
+
+      <ProductivityChartPopup
+        open={openProductivityModal}
+        handleClose={() => {
+          setOpenProductivityModal(false);
+        }}
+        data={habits}
+      />
     </>
   );
 };

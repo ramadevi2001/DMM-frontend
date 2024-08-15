@@ -59,7 +59,7 @@ const ObservationsList = () => {
     .map(({ id, user, ...rest }) => ({ id, ...rest }));
 
   const handleCellClick = (id) => {
-    alert("Selected observationId: " + id);
+    // alert("Selected observationId: " + id);
     navigate("/monthly-observations");
   };
 
