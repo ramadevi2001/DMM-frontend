@@ -11,9 +11,10 @@ import Goals from "./components/goals/Goals";
 import MonthlyGoals from "./components/monthly-goals/MonthlyGoals";
 import Habits from "./components/habits/Habits";
 import Observations from "./components/observations/Observations";
+import { useSelector } from "react-redux";
 
 const App = () => {
- 
+ const isLoggedIn = useSelector((state)=> state.login.isLoggedIn)
 
 
   return (
@@ -24,7 +25,7 @@ const App = () => {
           <Route path="/" element={<ReferenceBooks />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
-          {localStorage.getItem("token")  ? (
+          {isLoggedIn  ? (
             <>
             <Route path="/choices" element={<Choices />} />
             <Route path="/goals" element={<Goals />} />

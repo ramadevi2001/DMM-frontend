@@ -12,10 +12,14 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import styles from "./css/Homepage.module.css"; // Assuming you have appropriate CSS in this file
 import logoImage from "../../assets/images/logo2.png";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutStatus } from "./slices/loginSlice";
 const Homepage = () => {
+  const isLoggedIn = useSelector((state)=> state.login.isLoggedIn);
   const user = JSON.parse(localStorage.getItem("user"));
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -30,6 +34,7 @@ const Homepage = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    dispatch(logoutStatus());
     handleMenuClose();
     navigate("/"); // Redirect to homepage after logout
   };
@@ -48,7 +53,7 @@ const Homepage = () => {
         </Box>
 
         <Box sx={{ flexBasis: "15%" }}>
-          {localStorage.getItem("token") && (
+          {isLoggedIn && (
             <Link
               className={styles.button}
               to="/observations"
@@ -93,7 +98,7 @@ const Homepage = () => {
             marginTop: "1%",
           }}
         >
-          {localStorage.getItem("token") ? (
+          {isLoggedIn ? (
             <>
               <Link
                 className={styles.button}
