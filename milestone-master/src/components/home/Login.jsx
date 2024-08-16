@@ -13,7 +13,7 @@ import {
 import { Visibility, VisibilityOff, Lock } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { login, resetStatus } from "./slices/loginSlice";
+import { login, resetStatus, loginStatus } from "./slices/loginSlice";
 
 import ErrorComponent from "../popup/Error";
 import LoadingComponent from "../popup/Loading";
@@ -63,6 +63,7 @@ const Login = () => {
 
  const onCloseSuccess = ()=>{
   dispatch(resetStatus())
+  dispatch(loginStatus())
   console.log("user after login", user)
   localStorage.setItem('token', user.access)
   localStorage.setItem("user", JSON.stringify(user.user))

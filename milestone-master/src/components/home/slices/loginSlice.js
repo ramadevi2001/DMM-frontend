@@ -36,11 +36,17 @@ export const login = createAsyncThunk('auth/login', async (credentials) => {
 
 const loginSlice = createSlice({
     name: 'login',
-    initialState: { user: null, status: 'idle', error: null },
+    initialState: { user: null, status: 'idle', error: null, isLoggedIn: false},
     reducers: {
         resetStatus: (state) => {
             state.status = 'idle';
             state.error = null;
+        },
+        loginStatus: (state) => {
+            state.isLoggedIn = true;
+        },
+        logoutStatus: (state) => {
+            state.isLoggedIn = false;
         }
     },
     extraReducers: (builder) => {
@@ -59,5 +65,5 @@ const loginSlice = createSlice({
     },
 });
 
-export const { resetStatus } = loginSlice.actions;
+export const { resetStatus, loginStatus, logoutStatus} = loginSlice.actions;
 export default loginSlice.reducer;
