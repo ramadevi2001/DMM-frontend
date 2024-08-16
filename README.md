@@ -2,7 +2,7 @@
 Frontend application for Milestone Master
 
 ## Prerequisites
-1. Set up the backend application (you can find it at the `backend link`).
+1. Set up the backend application (you can find it at `https://github.com/ramadevi2001/DMM-backend.git`).
 2. Ensure the backend application is running.
 3. Install Node.js on your machine from the following link: [Node.js Download](https://nodejs.org/en/download/prebuilt-installer).
 4. Install Git on your machine.
