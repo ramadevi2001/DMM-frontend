@@ -140,7 +140,7 @@ const GoalsList = () => {
       <Box sx={{ width: "75%", marginTop: "1%", border: "5px solid #92918e" }}>
         <Box p={1} sx={{ backgroundColor: "white" }}>
           <Grid container spacing={1} alignItems="center">
-            <Grid item xs={2}>
+            <Grid item xs={3}>
               <FormControl fullWidth>
                 <InputLabel>Choice</InputLabel>
                 <Select
@@ -157,6 +157,9 @@ const GoalsList = () => {
               </FormControl>
             </Grid>
             <Grid item xs={2}>
+
+            </Grid>
+            <Grid item xs={3}>
               <Button
                 variant="contained"
                 color="primary"
@@ -167,15 +170,7 @@ const GoalsList = () => {
                 Add Goal
               </Button>
             </Grid>
-            <Grid item xs={4}>
-              <Typography
-                variant="h6"
-                align="center"
-                sx={{ fontWeight: "bold", color: "#3f51b5" }}
-              >
-                Your Goals
-              </Typography>
-            </Grid>
+            
             <Grid item xs={4}>
               <TextField
                 variant="outlined"
@@ -201,6 +196,7 @@ const GoalsList = () => {
             rowsPerPage={rowsPerPage}
             handleChangePage={handleChangePage}
             handleChangeRowsPerPage={handleChangeRowsPerPage}
+            count={goals.length}
           />
         ) : (
           <h2>No Goals Yet</h2>
