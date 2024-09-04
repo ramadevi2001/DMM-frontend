@@ -30,6 +30,7 @@ const Quote = ({heading, message}) => {
             fontStyle: 'italic',
             fontSize: '1.0rem',
             color: '#2e2e2e',
+            paddingBottom:'1px'
           }}
         >
           {message}

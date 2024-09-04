@@ -4,13 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getChoices, selectedChoice } from "./slices/choices.slice";
 import { addChoice } from "./slices/addChoice.slice";
 import { deleteChoice } from "./slices/deleteChoice.slice";
-import {
-  Box,
-  Grid,
-  Button,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Grid, Button, TextField, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { useNavigate } from "react-router-dom";
 import AddChoice from "./AddChoice";
@@ -101,7 +95,7 @@ const ChoicesList = () => {
   return (
     <>
       <Box sx={{ width: "75%", marginTop: "1%", border: "5px solid #92918e" }}>
-        <Box p={1} sx={{backgroundColor: "white"}}>
+        <Box p={1} sx={{ backgroundColor: "white" }}>
           <Grid container spacing={1} alignItems="center">
             <Grid item xs={3}>
               <Button
@@ -134,20 +128,24 @@ const ChoicesList = () => {
             </Grid>
           </Grid>
         </Box>
-
-        <GenericTable
-          data={choicesToDisplay}
-          headers={Object.keys(choicesToDisplay[0] || {}).filter(
-            (key) => key !== "id"
-          )}
-          onCellClick={handleCellClick}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-          page={page}
-          rowsPerPage={rowsPerPage}
-          handleChangePage={handleChangePage}
-          handleChangeRowsPerPage={handleChangeRowsPerPage}
-        />
+        {choices.length > 0 ? (
+          <GenericTable
+            data={choicesToDisplay}
+            headers={Object.keys(choicesToDisplay[0] || {}).filter(
+              (key) => key !== "id" && key !== "user"
+            )}
+            onCellClick={handleCellClick}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            handleChangePage={handleChangePage}
+            handleChangeRowsPerPage={handleChangeRowsPerPage}
+            count={choices.length}
+          />
+        ) : (
+          <h2>No Choices Yet</h2>
+        )}
       </Box>
 
       <AddChoice
